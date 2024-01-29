@@ -35,12 +35,27 @@ logs: ## Show live logs
 sh: ## Connect to the FrankenPHP container
 	@$(PHP_CONT) sh
 
+## —— Tools 🛠️ ——————————————————————————————————————————————————————————————————
 test: ## Start tests with phpunit, pass the parameter "c=" to add options to phpunit, example: make test c="--group e2e --stop-on-failure"
 	@$(eval c ?=)
 	@$(DOCKER_COMP) exec -e APP_ENV=test php bin/phpunit $(c)
 
-static:
+stan: ## Run PHPStan analyse
 	@$(PHP_CONT) vendor/bin/phpstan analyse
+
+rector: ## Run Rector analysis with --dry-run flag to report errors without fixing
+	@$(PHP_CONT) vendor/bin/rector --dry-run
+
+rector-fix: ## Run Rector analysis and auto-fix issues
+	@$(PHP_CONT) vendor/bin/rector
+
+cs: ## Run coding standards check with --dry-run flag to report errors without fixing
+	@$(PHP_CONT) vendor/bin/php-cs-fixer fix --dry-run -v
+
+cs-fix: ## Run coding standards check and auto-fix issues
+	@$(PHP_CONT) vendor/bin/php-cs-fixer fix
+
+all: test stan rector cs ## Run all our code quality tools as one
 
 ## —— Composer 🧙 ——————————————————————————————————————————————————————————————
 composer: ## Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'
