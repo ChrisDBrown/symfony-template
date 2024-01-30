@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "75b22490d06c0a532153b779c0056a04",
+    "content-hash": "14c333fc9885cdd34c48fea3bbad1b04",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1638,16 +1638,16 @@
         },
         {
             "name": "league/tactician-bundle",
-            "version": "dev-symfony7-support-improve",
+            "version": "v1.5.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/olegpro/tactician-bundle.git",
-                "reference": "3337b36d5a01959d85adedc27be186a342172871"
+                "url": "https://github.com/thephpleague/tactician-bundle.git",
+                "reference": "165d9fa14eb55bf84257fc40af0a69beca9c3611"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/olegpro/tactician-bundle/zipball/3337b36d5a01959d85adedc27be186a342172871",
-                "reference": "3337b36d5a01959d85adedc27be186a342172871",
+                "url": "https://api.github.com/repos/thephpleague/tactician-bundle/zipball/165d9fa14eb55bf84257fc40af0a69beca9c3611",
+                "reference": "165d9fa14eb55bf84257fc40af0a69beca9c3611",
                 "shasum": ""
             },
             "require": {
@@ -1689,14 +1689,7 @@
                     "League\\Tactician\\Bundle\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "League\\Tactician\\Bundle\\Tests\\": [
-                        "tests/",
-                        "tests/testapp/src/"
-                    ]
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1725,9 +1718,10 @@
                 "tactician"
             ],
             "support": {
-                "source": "https://github.com/olegpro/tactician-bundle/tree/symfony7-support-improve"
+                "issues": "https://github.com/thephpleague/tactician-bundle/issues",
+                "source": "https://github.com/thephpleague/tactician-bundle/tree/v1.5.1"
             },
-            "time": "2023-12-15T21:04:54+00:00"
+            "time": "2024-01-30T18:43:03+00:00"
         },
         {
             "name": "league/tactician-container",
@@ -6711,16 +6705,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "0.19.2",
+            "version": "0.19.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "bc96a99895bf47c6bfe70ea1b799f0081ed5a903"
+                "reference": "89c895d127b9d248d2af007068a824b5348ef81f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/bc96a99895bf47c6bfe70ea1b799f0081ed5a903",
-                "reference": "bc96a99895bf47c6bfe70ea1b799f0081ed5a903",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/89c895d127b9d248d2af007068a824b5348ef81f",
+                "reference": "89c895d127b9d248d2af007068a824b5348ef81f",
                 "shasum": ""
             },
             "require": {
@@ -6755,7 +6749,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/0.19.2"
+                "source": "https://github.com/rectorphp/rector/tree/0.19.5"
             },
             "funding": [
                 {
@@ -6763,7 +6757,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-01-19T10:58:30+00:00"
+            "time": "2024-01-29T23:53:47+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -8189,18 +8183,9 @@
             "time": "2023-11-20T00:12:19+00:00"
         }
     ],
-    "aliases": [
-        {
-            "package": "league/tactician-bundle",
-            "version": "dev-symfony7-support-improve",
-            "alias": "1.5.0",
-            "alias_normalized": "1.5.0.0"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "league/tactician-bundle": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
