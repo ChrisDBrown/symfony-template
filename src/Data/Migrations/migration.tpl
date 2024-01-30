@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace <namespace>;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+final class <className> extends AbstractMigration
+{
+    public function getDescription(): string
+    {
+        //@TODO: Write description
+        return '';
+    }
+
+    public function up(Schema $schema): void
+    {
+    <up>
+    }
+
+    public function down(Schema $schema): void
+    {
+        // No down migration should be added, follow expand-contract practices
+    }
+}

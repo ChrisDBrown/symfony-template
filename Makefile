@@ -40,6 +40,15 @@ test: ## Start tests with phpunit, pass the parameter "c=" to add options to php
 	@$(eval c ?=)
 	@$(DOCKER_COMP) exec -e APP_ENV=test php bin/phpunit $(c)
 
+test-functional: ## Run functional testsuite with phpunit
+	@$(DOCKER_COMP) exec -e APP_ENV=test php bin/phpunit --testsuite Functional
+
+test-integration: ## Run integration testsuite with phpunit
+	@$(DOCKER_COMP) exec -e APP_ENV=test php bin/phpunit --testsuite Integration
+
+test-unit: ## Run unit testsuite with phpunit
+	@$(DOCKER_COMP) exec -e APP_ENV=test php bin/phpunit --testsuite Unit
+
 stan: ## Run PHPStan analyse
 	@$(PHP_CONT) vendor/bin/phpstan analyse
 
@@ -55,7 +64,29 @@ cs: ## Run coding standards check with --dry-run flag to report errors without f
 cs-fix: ## Run coding standards check and auto-fix issues
 	@$(PHP_CONT) vendor/bin/php-cs-fixer fix
 
-all: test stan rector cs ## Run all our code quality tools as one
+deptrac: ## Check our domain boundaries haven't been crossed
+	@$(PHP_CONT) vendor/bin/deptrac
+
+all: test stan rector cs deptrac ## Run all our code quality tools as one
+
+## —— Database 📋 ——————————————————————————————————————————————————————————————
+db-reset:
+	@$(SYMFONY) doctrine:database:drop --force --if-exists
+	@$(SYMFONY) doctrine:database:drop --force --if-exists --env=test
+	@$(SYMFONY) doctrine:database:create --if-not-exists
+	@$(SYMFONY) doctrine:database:create --if-not-exists --env=test
+
+migrations-diff: ##@Doctrine Generates a database migration by comparing the current database to the mapping information
+	@$(SYMFONY) doctrine:migrations:diff
+	@$(PHP_CONT) vendor/bin/php-cs-fixer fix src/Data/Migrations
+
+migrations-create: ##@Doctrine Generates a blank database migration
+	@$(SYMFONY) doctrine:migrations:generate
+	@$(PHP_CONT) vendor/bin/php-cs-fixer fix src/Data/Migrations
+
+migrations-migrate: ##@Doctrine Runs the database migrations
+	@$(SYMFONY) doctrine:migrations:migrate --no-interaction --allow-no-migration
+	@$(SYMFONY) doctrine:migrations:migrate --no-interaction --allow-no-migration --env=test
 
 ## —— Composer 🧙 ——————————————————————————————————————————————————————————————
 composer: ## Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'

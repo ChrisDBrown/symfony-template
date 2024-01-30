@@ -1,0 +1,10 @@
+App\Domain\Model\Entity\Profile:
+  exclusion_policy: ALL
+
+  properties:
+    id:
+      type: string
+    name:
+      type: string
+    createdAt:
+      type: DateTimeImmutable
