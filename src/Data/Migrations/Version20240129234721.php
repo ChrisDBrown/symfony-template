@@ -12,8 +12,7 @@ final class Version20240129234721 extends AbstractMigration
     #[\Override]
     public function getDescription(): string
     {
-        // @TODO: Write description
-        return '';
+        return 'Set up profile table';
     }
 
     #[\Override]
