@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\QueryHandler;
 
+use App\Application\Exception\NotFoundException;
 use App\Application\Query\GetProfileQuery;
 use App\Domain\Model\Entity\Profile;
 use App\Domain\Repository\ProfileRepositoryInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GetProfileQueryHandler
 {
@@ -20,8 +20,7 @@ class GetProfileQueryHandler
         $profile = $this->profileRepository->findOneById($command->id);
 
         if (!$profile instanceof Profile) {
-            // @TODO: Remove HTTP exceptions from Application layer
-            throw new NotFoundHttpException(sprintf('No profile found for id %s', $command->id));
+            throw new NotFoundException(sprintf('No profile found for id %s', $command->id));
         }
 
         return $profile;

@@ -6,11 +6,11 @@ namespace App\Tests\Unit\Application\CommandHandler;
 
 use App\Application\Command\DeleteProfileCommand;
 use App\Application\CommandHandler\DeleteProfileCommandHandler;
+use App\Application\Exception\NotFoundException;
 use App\Domain\Model\Entity\Profile;
 use App\Domain\Repository\ProfileRepositoryInterface;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
 
 class DeleteProfileCommandHandlerTest extends TestCase
@@ -45,7 +45,7 @@ class DeleteProfileCommandHandlerTest extends TestCase
 
         $this->repository->shouldReceive('findOneById')->with((string) $fakeId)->once()->andReturn(null);
 
-        self::expectException(NotFoundHttpException::class);
+        self::expectException(NotFoundException::class);
         $this->handler->handle(new DeleteProfileCommand((string) $fakeId));
     }
 }

@@ -38,7 +38,7 @@ class GetProfilesQueryHandlerTest extends IntegrationTest
         self::assertCount(count($names), $result);
     }
 
-    public function testData(): \Generator
+    protected function testData(): \Generator
     {
         yield 'No profiles' => [[]];
 

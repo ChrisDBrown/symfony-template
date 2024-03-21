@@ -7,6 +7,7 @@ namespace App\Tests\Functional\Infrastructure\Http;
 use App\Domain\Model\Entity\Profile;
 use App\Tests\Functional\FunctionalTest;
 use App\Tests\JsonPathTrait;
+use Symfony\Component\Uid\Uuid;
 
 class ProfilesControllerTest extends FunctionalTest
 {
@@ -41,6 +42,14 @@ class ProfilesControllerTest extends FunctionalTest
     }
 
     /** @test */
+    public function readMissingProfileGives404(): void
+    {
+        $this->client->jsonRequest('GET', sprintf('/profiles/%s', Uuid::v4()));
+
+        self::assertResponseStatusCodeSame(404);
+    }
+
+    /** @test */
     public function canUpdateProfile(): void
     {
         $existingProfile = $this->persistProfileForName('Chris');
@@ -57,6 +66,14 @@ class ProfilesControllerTest extends FunctionalTest
     }
 
     /** @test */
+    public function updateMissingProfileGives404(): void
+    {
+        $this->client->jsonRequest('POST', sprintf('/profiles/%s', Uuid::v4()), ['name' => 'Kevin']);
+
+        self::assertResponseStatusCodeSame(404);
+    }
+
+    /** @test */
     public function canDeleteProfile(): void
     {
         $existingProfile = $this->persistProfileForName('Chris');
@@ -67,6 +84,14 @@ class ProfilesControllerTest extends FunctionalTest
 
         $profile = $this->entityManager->find(Profile::class, $existingProfile->getId());
         self::assertNull($profile);
+    }
+
+    /** @test */
+    public function deleteMissingProfileGives404(): void
+    {
+        $this->client->jsonRequest('DELETE', sprintf('/profiles/%s', Uuid::v4()));
+
+        self::assertResponseStatusCodeSame(404);
     }
 
     /** @test */

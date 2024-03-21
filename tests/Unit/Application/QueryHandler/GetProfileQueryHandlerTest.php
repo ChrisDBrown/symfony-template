@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Application\QueryHandler;
 
+use App\Application\Exception\NotFoundException;
 use App\Application\Query\GetProfileQuery;
 use App\Application\QueryHandler\GetProfileQueryHandler;
 use App\Domain\Model\Entity\Profile;
 use App\Domain\Repository\ProfileRepositoryInterface;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
 
 class GetProfileQueryHandlerTest extends TestCase
@@ -44,7 +44,7 @@ class GetProfileQueryHandlerTest extends TestCase
 
         $this->repository->shouldReceive('findOneById')->with((string) $id)->andReturnNull();
 
-        self::expectException(NotFoundHttpException::class);
+        self::expectException(NotFoundException::class);
         $this->handler->handle(new GetProfileQuery((string) $id));
     }
 }

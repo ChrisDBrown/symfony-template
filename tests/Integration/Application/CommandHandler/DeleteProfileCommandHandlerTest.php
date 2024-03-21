@@ -6,9 +6,9 @@ namespace App\Tests\Integration\Application\CommandHandler;
 
 use App\Application\Command\DeleteProfileCommand;
 use App\Application\CommandHandler\DeleteProfileCommandHandler;
+use App\Application\Exception\NotFoundException;
 use App\Domain\Model\Entity\Profile;
 use App\Tests\Integration\IntegrationTest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
 
 class DeleteProfileCommandHandlerTest extends IntegrationTest
@@ -36,7 +36,7 @@ class DeleteProfileCommandHandlerTest extends IntegrationTest
     /** @test */
     public function throwOnProfileNotFound(): void
     {
-        self::expectException(NotFoundHttpException::class);
+        self::expectException(NotFoundException::class);
         $this->handler->handle(new DeleteProfileCommand((string) Uuid::v4()));
     }
 }

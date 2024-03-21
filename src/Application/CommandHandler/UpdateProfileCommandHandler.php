@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Application\CommandHandler;
 
 use App\Application\Command\UpdateProfileCommand;
+use App\Application\Exception\NotFoundException;
 use App\Domain\Model\Entity\Profile;
 use App\Domain\Repository\ProfileRepositoryInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UpdateProfileCommandHandler
 {
@@ -20,8 +20,7 @@ class UpdateProfileCommandHandler
         $profile = $this->profileRepository->findOneById($command->id);
 
         if (!$profile instanceof Profile) {
-            // @TODO: Remove HTTP exceptions from Application layer
-            throw new NotFoundHttpException(sprintf('No profile found for id %s', $command->id));
+            throw new NotFoundException(sprintf('No profile found for id %s', $command->id));
         }
 
         $profile->update($command->name);

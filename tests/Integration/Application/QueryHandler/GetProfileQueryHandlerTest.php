@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\Application\QueryHandler;
 
+use App\Application\Exception\NotFoundException;
 use App\Application\Query\GetProfileQuery;
 use App\Application\QueryHandler\GetProfileQueryHandler;
 use App\Tests\Integration\IntegrationTest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
 
 class GetProfileQueryHandlerTest extends IntegrationTest
@@ -35,7 +35,7 @@ class GetProfileQueryHandlerTest extends IntegrationTest
     /** @test */
     public function throwOnProfileNotFound(): void
     {
-        self::expectException(NotFoundHttpException::class);
+        self::expectException(NotFoundException::class);
         $this->handler->handle(new GetProfileQuery((string) Uuid::v4()));
     }
 }

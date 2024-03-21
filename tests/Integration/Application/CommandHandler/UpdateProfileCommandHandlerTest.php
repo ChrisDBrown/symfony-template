@@ -6,9 +6,9 @@ namespace App\Tests\Integration\Application\CommandHandler;
 
 use App\Application\Command\UpdateProfileCommand;
 use App\Application\CommandHandler\UpdateProfileCommandHandler;
+use App\Application\Exception\NotFoundException;
 use App\Domain\Model\Entity\Profile;
 use App\Tests\Integration\IntegrationTest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
 
 class UpdateProfileCommandHandlerTest extends IntegrationTest
@@ -38,7 +38,7 @@ class UpdateProfileCommandHandlerTest extends IntegrationTest
     /** @test */
     public function throwOnProfileNotFound(): void
     {
-        self::expectException(NotFoundHttpException::class);
+        self::expectException(NotFoundException::class);
         $this->handler->handle(new UpdateProfileCommand((string) Uuid::v4(), 'Kevin'));
     }
 }
