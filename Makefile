@@ -59,10 +59,10 @@ rector-fix: ## Run Rector analysis and auto-fix issues
 	@$(PHP_CONT) vendor/bin/rector
 
 cs: ## Run coding standards check with --dry-run flag to report errors without fixing
-	@$(PHP_CONT) vendor/bin/php-cs-fixer fix --dry-run -v
+	@$(PHP_CONT) vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes -v
 
 cs-fix: ## Run coding standards check and auto-fix issues
-	@$(PHP_CONT) vendor/bin/php-cs-fixer fix
+	@$(PHP_CONT) vendor/bin/php-cs-fixer fix --allow-risky=yes
 
 deptrac: ## Check our domain boundaries haven't been crossed
 	@$(PHP_CONT) vendor/bin/deptrac

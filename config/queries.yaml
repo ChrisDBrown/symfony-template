@@ -4,9 +4,9 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    App\Application\QueryHandler\FindProfileQueryHandler:
+    App\Application\QueryHandler\GetProfileQueryHandler:
         tags:
-            - { name: tactician.handler, command: App\Application\Query\FindProfileQuery, bus: query }
+            - { name: tactician.handler, command: App\Application\Query\GetProfileQuery, bus: query }
     App\Application\QueryHandler\GetProfilesQueryHandler:
         tags:
             - { name: tactician.handler, command: App\Application\Query\GetProfilesQuery, bus: query }

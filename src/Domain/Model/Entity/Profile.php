@@ -11,7 +11,7 @@ class Profile
 {
     private readonly \DateTimeImmutable $createdAt;
 
-    private readonly \DateTimeImmutable $updatedAt;
+    private \DateTimeImmutable $updatedAt;
 
     public function __construct(
         private readonly UuidV4 $id,
@@ -29,6 +29,9 @@ class Profile
     public function update(string $name): void
     {
         $this->name = $name;
+        // @TODO: updatedAt updates are handled by gedmo:timestampeable but Rector makes
+        //        the property readonly if we don't update it somewhere in the class code - ReadOnlyPropertyRector
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getName(): string

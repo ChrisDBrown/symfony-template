@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Integration\Infrastructure\Repository;
 
 use App\Domain\Model\Entity\Profile;
 use App\Infrastructure\Repository\DoctrineProfileRepository;
-use App\Tests\BaseKernel;
-use Symfony\Component\Uid\Uuid;
+use App\Tests\Integration\IntegrationTest;
 
-class DoctrineProfileRepositoryTest extends BaseKernel
+class DoctrineProfileRepositoryTest extends IntegrationTest
 {
     private DoctrineProfileRepository $repository;
 
@@ -46,12 +47,19 @@ class DoctrineProfileRepositoryTest extends BaseKernel
         self::assertEquals('Kevin', $result[1]->getName());
     }
 
-    private function persistProfileForName(string $name): void
+    /** @test */
+    public function canDeleteProfile(): void
     {
-        $uuid = Uuid::v4();
-        $profile = new Profile($uuid, $name);
+        $this->persistProfileForName('Chris');
+        $this->persistProfileForName('Kevin');
 
-        $this->entityManager->persist($profile);
-        $this->entityManager->flush();
+        $beforeDelete = $this->repository->getAll();
+        self::assertCount(2, $beforeDelete);
+
+        $this->repository->delete($beforeDelete[0]);
+
+        $afterDelete = $this->repository->getAll();
+        self::assertCount(1, $afterDelete);
+        self::assertEquals('Kevin', $afterDelete[0]->getName());
     }
 }

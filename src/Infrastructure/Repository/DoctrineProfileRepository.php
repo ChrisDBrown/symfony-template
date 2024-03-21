@@ -37,4 +37,11 @@ class DoctrineProfileRepository implements ProfileRepositoryInterface
         $this->entityManager->persist($profile);
         $this->entityManager->flush();
     }
+
+    #[\Override]
+    public function delete(Profile $profile): void
+    {
+        $this->entityManager->remove($profile);
+        $this->entityManager->flush();
+    }
 }

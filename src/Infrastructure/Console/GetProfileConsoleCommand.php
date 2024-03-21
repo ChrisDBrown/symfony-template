@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Console;
 
-use App\Application\Query\FindProfileQuery;
+use App\Application\Query\GetProfileQuery;
 use App\Application\Query\GetProfilesQuery;
 use App\Domain\Model\Entity\Profile;
 use League\Tactician\CommandBus;
@@ -35,17 +35,17 @@ class GetProfileConsoleCommand extends ConsoleCommand
     {
         $id = $input->getArgument('id');
         if (is_string($id) && UuidV4::isValid($id)) {
-            /** @var ?Profile $profile */
-            $profile = $this->queryBus->handle(new FindProfileQuery($id));
-            if (null === $profile) {
+            try {
+                /** @var Profile $profile */
+                $profile = $this->queryBus->handle(new GetProfileQuery($id));
+                $output->write(sprintf('%s %s', $profile->getId(), $profile->getName()));
+
+                return 0;
+            } catch (\InvalidArgumentException) {
                 $output->write(sprintf('No profile found for id %s', $id));
 
                 return 1;
             }
-
-            $output->write(sprintf('%s %s', $profile->getId(), $profile->getName()));
-
-            return 0;
         }
 
         /** @var list<Profile> $profiles */

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Command;
+namespace App\Infrastructure\Http\RequestDto;
 
-class CreateProfileCommand
+class UpdateProfileRequestDto
 {
     public function __construct(public readonly string $name)
     {

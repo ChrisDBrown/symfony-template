@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Functional\Infrastructure\Console;
 
-use App\Domain\Model\Entity\Profile;
-use App\Tests\BaseKernel;
+use App\Tests\Functional\FunctionalTest;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Uid\Uuid;
 
-class GetProfileConsoleCommandTest extends BaseKernel
+class GetProfileConsoleCommandTest extends FunctionalTest
 {
     private CommandTester $commandTester;
 
@@ -43,16 +43,5 @@ class GetProfileConsoleCommandTest extends BaseKernel
         $output = $this->commandTester->getDisplay();
         $this::assertStringContainsString('Chris', $output);
         $this::assertStringContainsString('Kevin', $output);
-    }
-
-    private function persistProfileForName(string $name): Profile
-    {
-        $uuid = Uuid::v4();
-        $profile = new Profile($uuid, $name);
-
-        $this->entityManager->persist($profile);
-        $this->entityManager->flush();
-
-        return $profile;
     }
 }

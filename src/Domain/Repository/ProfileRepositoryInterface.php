@@ -14,4 +14,6 @@ interface ProfileRepositoryInterface
     public function getAll(): array;
 
     public function save(Profile $profile): void;
+
+    public function delete(Profile $profile): void;
 }

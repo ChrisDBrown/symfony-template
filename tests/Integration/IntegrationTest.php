@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Tests;
+declare(strict_types=1);
 
-use App\Kernel;
+namespace App\Tests\Integration;
+
+use App\Domain\Model\Entity\Profile;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Uid\Uuid;
 
-abstract class BaseKernel extends KernelTestCase
+abstract class IntegrationTest extends KernelTestCase
 {
     protected EntityManagerInterface $entityManager;
 
@@ -30,13 +31,15 @@ abstract class BaseKernel extends KernelTestCase
         parent::tearDown();
     }
 
-    public function getCommandTester(string $name): CommandTester
+    // @TODO: I'd rather have a builder for test entities than have a million methods on this base class
+    protected function persistProfileForName(string $name): Profile
     {
-        /** @var Kernel $kernel */
-        $kernel = self::$kernel;
-        $app = new Application($kernel);
-        $command = $app->find($name);
+        $uuid = Uuid::v4();
+        $profile = new Profile($uuid, $name);
 
-        return new CommandTester($command);
+        $this->entityManager->persist($profile);
+        $this->entityManager->flush();
+
+        return $profile;
     }
 }

@@ -1,8 +1,7 @@
 parameters:
     paths:
         - ./src
-    exclude_files:
-        - '#.*test.*#'
+        - ./tests
     layers:
         -   name: Domain
             collectors:
@@ -20,6 +19,10 @@ parameters:
             collectors:
                 -   type: className
                     regex: App\\Data\\.*
+        -   name: Test
+            collectors:
+                -   type: className
+                    regex: App\\Tests\\.*
     ruleset:
         Domain:
         Application:
@@ -29,3 +32,8 @@ parameters:
             - Application
         Data:
             - Domain
+        Test: 
+            - Domain
+            - Application
+            - Infrastructure
+            - Data

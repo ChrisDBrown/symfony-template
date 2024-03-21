@@ -6,3 +6,9 @@ services:
     App\Application\CommandHandler\CreateProfileCommandHandler:
         tags:
             - { name: tactician.handler, command: App\Application\Command\CreateProfileCommand, bus: command }
+    App\Application\CommandHandler\DeleteProfileCommandHandler:
+        tags:
+            - { name: tactician.handler, command: App\Application\Command\DeleteProfileCommand, bus: command }
+    App\Application\CommandHandler\UpdateProfileCommandHandler:
+        tags:
+            - { name: tactician.handler, command: App\Application\Command\UpdateProfileCommand, bus: command }

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Functional\Infrastructure\Console;
 
-use App\Tests\BaseKernel;
+use App\Tests\Functional\FunctionalTest;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class CreateProfileConsoleCommandTest extends BaseKernel
+class CreateProfileConsoleCommandTest extends FunctionalTest
 {
     private CommandTester $commandTester;
 

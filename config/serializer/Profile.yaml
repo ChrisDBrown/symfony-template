@@ -1,0 +1,6 @@
+App\Domain\Model\Entity\Profile:
+    attributes:
+        id: ~
+        name: ~
+        createdAt: ~
+        updatedAt: ~

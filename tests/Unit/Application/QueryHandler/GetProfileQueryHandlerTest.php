@@ -1,26 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\QueryHandler;
 
-use App\Application\Query\FindProfileQuery;
-use App\Application\QueryHandler\FindProfileQueryHandler;
+use App\Application\Query\GetProfileQuery;
+use App\Application\QueryHandler\GetProfileQueryHandler;
 use App\Domain\Model\Entity\Profile;
 use App\Domain\Repository\ProfileRepositoryInterface;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Uid\Uuid;
 
-class FindProfileQueryHandlerTest extends TestCase
+class GetProfileQueryHandlerTest extends TestCase
 {
     private ProfileRepositoryInterface&m\MockInterface $repository;
 
-    private FindProfileQueryHandler $handler;
+    private GetProfileQueryHandler $handler;
 
     #[\Override]
     protected function setUp(): void
     {
         $this->repository = m::mock(ProfileRepositoryInterface::class);
-        $this->handler = new FindProfileQueryHandler($this->repository);
+        $this->handler = new GetProfileQueryHandler($this->repository);
     }
 
     /** @test */
@@ -31,16 +34,17 @@ class FindProfileQueryHandlerTest extends TestCase
 
         $this->repository->shouldReceive('findOneById')->with((string) $id)->andReturn($profile);
 
-        self::assertEquals($profile, $this->handler->handle(new FindProfileQuery($id)));
+        self::assertEquals($profile, $this->handler->handle(new GetProfileQuery((string) $id)));
     }
 
     /** @test */
-    public function nullOnNonexistingProfile(): void
+    public function throwOnProfileNotFound(): void
     {
         $id = Uuid::v4();
 
         $this->repository->shouldReceive('findOneById')->with((string) $id)->andReturnNull();
 
-        self::assertNull($this->handler->handle(new FindProfileQuery($id)));
+        self::expectException(NotFoundHttpException::class);
+        $this->handler->handle(new GetProfileQuery((string) $id));
     }
 }
