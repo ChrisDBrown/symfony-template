@@ -1,0 +1,386 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Profile Template",
+    "version": "1.0",
+    "summary": "A simple CRUD example",
+    "description": "Allows naïve CRUD operations on a very simple Profile object.",
+    "contact": {
+      "name": "ChrisDBrown",
+      "url": "https://www.chrisdbrown.co.uk/",
+      "email": "owner@chrisdbrown.co.uk"
+    },
+    "license": {
+      "name": "GNU General Public License Version 3",
+      "url": "https://www.gnu.org/licenses/gpl-3.0.md"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://localhost:443",
+      "description": "HTTPS"
+    }
+  ],
+  "paths": {
+    "/profiles": {
+      "get": {
+        "summary": "List profiles",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "description": "An array of Profiles.",
+                      "items": {
+                        "$ref": "#/components/schemas/Profile",
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "operationId": "profiles_list",
+        "description": "Gets a list of all existing profiles ordered by descending creation datetime.",
+        "tags": [
+          "Profiles"
+        ]
+      },
+      "post": {
+        "summary": "Create profile",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SingleProfile"
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "operationId": "profiles_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Create a new profile.",
+        "tags": [
+          "Profiles"
+        ]
+      }
+    },
+    "/profiles/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "UUID of an existing profile"
+        }
+      ],
+      "get": {
+        "summary": "Get profile",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SingleProfile"
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "operationId": "profiles_get",
+        "description": "Get an existing profile by ID.",
+        "tags": [
+          "Profiles"
+        ]
+      },
+      "post": {
+        "summary": "Update profile",
+        "tags": [
+          "Profiles"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SingleProfile"
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "operationId": "profiles_update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Update an existing profile by ID."
+      },
+      "delete": {
+        "summary": "Delete profile",
+        "tags": [
+          "Profiles"
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "operationId": "profiles_delete",
+        "description": "Delete an existing profile by ID."
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Problem": {
+        "type": "object",
+        "title": "Problem",
+        "description": "[RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) format error",
+        "examples": [
+          {
+            "type": "https://zalando.github.io/problem/constraint-violation",
+            "title": "Connection Timeout",
+            "status": 503,
+            "detail": "Connection to database timed out"
+          },
+          {
+            "type": "https://tools.ietf.org/html/rfc2616#section-10",
+            "title": "An error occurred",
+            "status": 404,
+            "detail": "Not Found"
+          }
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri",
+            "description": "An absolute URI that identifies the problem type.  When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).\n",
+            "default": "about:blank",
+            "example": "https://zalando.github.io/problem/constraint-violation"
+          },
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable\n"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The HTTP status code generated by the origin server for this occurrence\nof the problem.\n",
+            "minimum": 100,
+            "exclusiveMaximum": 600,
+            "example": 503
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the\nproblem.\n",
+            "example": "Connection to database timed out"
+          }
+        }
+      },
+      "ValidationProblem": {
+        "type": "object",
+        "title": "ValidationProblem",
+        "description": "[RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) format error",
+        "examples": [
+          {
+            "type": "https://symfony.com/errors/validation",
+            "title": "Validation Failed",
+            "status": 422,
+            "detail": "name: This value should not be blank.\nname: This value is too short. It should have 2 characters or more.",
+            "violations": [
+              {
+                "propertyPath": "name",
+                "title": "This value should not be blank.",
+                "template": "This value should not be blank.",
+                "parameters": {
+                  "{{ value }}": "\"\""
+                },
+                "type": "urn:uuid:c1051bb4-d103-4f74-8988-acbcafc7fdc3"
+              },
+              {
+                "propertyPath": "name",
+                "title": "This value is too short. It should have 2 characters or more.",
+                "template": "This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.",
+                "parameters": {
+                  "{{ value }}": "\"\"",
+                  "{{ limit }}": "2",
+                  "{{ value_length }}": "0"
+                },
+                "type": "urn:uuid:9ff3fdc4-b214-49db-8718-39c315e33d45"
+              }
+            ]
+          }
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri",
+            "description": "An absolute URI that identifies the problem type.  When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).\n",
+            "default": "about:blank",
+            "example": "https://zalando.github.io/problem/constraint-violation"
+          },
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable\n"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The HTTP status code generated by the origin server for this occurrence\nof the problem. This is always 422 for validation errors.\n",
+            "minimum": 422,
+            "example": 422,
+            "maximum": 422
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the\nproblem.\n",
+            "example": "Connection to database timed out"
+          },
+          "violations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "propertyPath": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Profile": {
+        "title": "Profile",
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "responses": {
+      "SingleProfile": {
+        "description": "Details of a single profile",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "data"
+              ],
+              "properties": {
+                "data": {
+                  "$ref": "#/components/schemas/Profile"
+                }
+              }
+            },
+            "examples": {
+              "Example 1": {
+                "value": {
+                  "data": {
+                    "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                    "name": "Kel Cheris",
+                    "createdAt": "2019-08-24T14:15:22Z",
+                    "updatedAt": "2019-08-24T14:15:22Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "description": "Example response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                {
+                  "$ref": "#/components/schemas/ValidationProblem"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Profiles",
+      "description": "Action relating to a profile"
+    }
+  ]
+}

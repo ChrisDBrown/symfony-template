@@ -43,4 +43,16 @@ class Profile
     {
         return $this->id;
     }
+
+    // @TODO: Needed as symfony serializer's default mode uses getters - change this, maybe replace with JMS
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    // @TODO: Needed as symfony serializer's default mode uses getters - change this, maybe replace with JMS
+    public function getUpdatedAt(): \DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
 }

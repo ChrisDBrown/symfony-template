@@ -7,11 +7,19 @@ namespace App\Tests\Functional\Infrastructure\Http;
 use App\Domain\Model\Entity\Profile;
 use App\Tests\Functional\FunctionalTest;
 use App\Tests\JsonPathTrait;
+use Gertjuhh\SymfonyOpenapiValidator\OpenApiValidator;
 use Symfony\Component\Uid\Uuid;
 
 class ProfilesControllerTest extends FunctionalTest
 {
     use JsonPathTrait;
+    use OpenApiValidator;
+
+    #[\Override]
+    protected function assertPostConditions(): void
+    {
+        self::assertOpenApiSchema('public/openapi.json', $this->client);
+    }
 
     /** @test */
     public function canCreateProfile(): void
@@ -20,9 +28,9 @@ class ProfilesControllerTest extends FunctionalTest
 
         self::assertResponseIsSuccessful();
         $response = $this->client->getResponse()->getContent();
-        self::assertJsonValueEquals($response, '$.name', 'Chris');
+        self::assertJsonValueEquals($response, '$.data.name', 'Chris');
 
-        $id = self::getSingleJsonValueByPath($response, '$.id');
+        $id = self::getSingleJsonValueByPath($response, '$.data.id');
 
         $profile = $this->entityManager->find(Profile::class, $id);
         self::assertInstanceOf(Profile::class, $profile);
@@ -38,7 +46,7 @@ class ProfilesControllerTest extends FunctionalTest
 
         self::assertResponseIsSuccessful();
         $response = $this->client->getResponse()->getContent();
-        self::assertJsonValueEquals($response, '$.name', 'Chris');
+        self::assertJsonValueEquals($response, '$.data.name', 'Chris');
     }
 
     /** @test */
@@ -58,7 +66,7 @@ class ProfilesControllerTest extends FunctionalTest
 
         self::assertResponseIsSuccessful();
         $response = $this->client->getResponse()->getContent();
-        self::assertJsonValueEquals($response, '$.name', 'Kevin');
+        self::assertJsonValueEquals($response, '$.data.name', 'Kevin');
 
         $profile = $this->entityManager->find(Profile::class, $existingProfile->getId());
         self::assertInstanceOf(Profile::class, $profile);
@@ -104,7 +112,7 @@ class ProfilesControllerTest extends FunctionalTest
 
         self::assertResponseIsSuccessful();
         $response = $this->client->getResponse()->getContent();
-        self::assertJsonValueEquals($response, '$[0].name', 'Chris');
-        self::assertJsonValueEquals($response, '$[1].name', 'Kevin');
+        self::assertJsonValueEquals($response, '$.data[0].name', 'Chris');
+        self::assertJsonValueEquals($response, '$.data[1].name', 'Kevin');
     }
 }

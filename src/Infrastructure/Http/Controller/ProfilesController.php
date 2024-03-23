@@ -16,6 +16,7 @@ use League\Tactician\CommandBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
@@ -34,7 +35,7 @@ class ProfilesController extends AbstractController
         /** @var Profile $profile */
         $profile = $this->commandBus->handle(new CreateProfileCommand($dto->name));
 
-        return new JsonResponse($this->serializer->serialize($profile, 'json'), json: true);
+        return new JsonResponse($this->serializer->serialize(['data' => $profile], 'json'), json: true);
     }
 
     #[Route('/{uuid}', name: 'read', requirements: ['uuid' => Requirement::UUID], methods: [Request::METHOD_GET])]
@@ -43,7 +44,7 @@ class ProfilesController extends AbstractController
         /** @var ?Profile $profile */
         $profile = $this->queryBus->handle(new GetProfileQuery($uuid));
 
-        return new JsonResponse($this->serializer->serialize($profile, 'json'), json: true);
+        return new JsonResponse($this->serializer->serialize(['data' => $profile], 'json'), json: true);
     }
 
     #[Route('/{uuid}', name: 'update', requirements: ['uuid' => Requirement::UUID], methods: [Request::METHOD_POST])]
@@ -52,7 +53,7 @@ class ProfilesController extends AbstractController
         /** @var Profile $profile */
         $profile = $this->commandBus->handle(new UpdateProfileCommand($uuid, $dto->name));
 
-        return new JsonResponse($this->serializer->serialize($profile, 'json'), json: true);
+        return new JsonResponse($this->serializer->serialize(['data' => $profile], 'json'), json: true);
     }
 
     #[Route('/{uuid}', name: 'delete', requirements: ['uuid' => Requirement::UUID], methods: [Request::METHOD_DELETE])]
@@ -60,7 +61,7 @@ class ProfilesController extends AbstractController
     {
         $this->commandBus->handle(new DeleteProfileCommand($uuid));
 
-        return new JsonResponse();
+        return new JsonResponse(status: Response::HTTP_NO_CONTENT);
     }
 
     #[Route('/', name: 'list', methods: [Request::METHOD_GET])]
@@ -69,6 +70,6 @@ class ProfilesController extends AbstractController
         /** @var list<Profile> $profiles */
         $profiles = $this->queryBus->handle(new GetProfilesQuery());
 
-        return new JsonResponse($this->serializer->serialize($profiles, 'json'), json: true);
+        return new JsonResponse($this->serializer->serialize(['data' => $profiles], 'json'), json: true);
     }
 }
