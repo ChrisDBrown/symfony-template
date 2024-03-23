@@ -64,11 +64,10 @@ jobs:
         run: docker compose exec -T php vendor/bin/rector --dry-run
       -
         name: Run CS Fixer
-        run: docker compose exec -T php vendor/bin/php-cs-fixer fix --dry-run
+        run: docker compose exec -T php vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes
       -
         name: Run Deptrac
         run: docker compose exec -T php vendor/bin/deptrac
-        
   lint:
     name: Docker Lint
     runs-on: ubuntu-latest
