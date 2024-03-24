@@ -1,0 +1,5 @@
+App\Application\Query\GetProfileQuery:
+    properties:
+        id:
+            - NotBlank: ~
+            - Uuid: ~

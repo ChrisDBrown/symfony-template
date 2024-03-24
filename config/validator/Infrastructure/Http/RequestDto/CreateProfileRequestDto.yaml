@@ -1,0 +1,7 @@
+App\Infrastructure\Http\RequestDto\CreateProfileRequestDto:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                  min: 1
+                  max: 255

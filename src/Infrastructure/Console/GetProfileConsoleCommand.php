@@ -13,7 +13,6 @@ use Symfony\Component\Console\Command\Command as ConsoleCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Uid\UuidV4;
 
 #[AsCommand(name: 'app:get-profile')]
 class GetProfileConsoleCommand extends ConsoleCommand
@@ -34,18 +33,12 @@ class GetProfileConsoleCommand extends ConsoleCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $id = $input->getArgument('id');
-        if (is_string($id) && UuidV4::isValid($id)) {
-            try {
-                /** @var Profile $profile */
-                $profile = $this->queryBus->handle(new GetProfileQuery($id));
-                $output->write(sprintf('%s %s', $profile->getId(), $profile->getName()));
+        if (is_string($id)) {
+            /** @var Profile $profile */
+            $profile = $this->queryBus->handle(new GetProfileQuery($id));
+            $output->write(sprintf('%s %s', $profile->getId(), $profile->getName()));
 
-                return 0;
-            } catch (\InvalidArgumentException) {
-                $output->write(sprintf('No profile found for id %s', $id));
-
-                return 1;
-            }
+            return 0;
         }
 
         /** @var list<Profile> $profiles */

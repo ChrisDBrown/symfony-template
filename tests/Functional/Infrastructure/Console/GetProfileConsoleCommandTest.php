@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Infrastructure\Console;
 
+use App\Application\Exception\NotFoundException;
 use App\Tests\Functional\FunctionalTest;
+use League\Tactician\Bundle\Middleware\InvalidCommandException;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Uid\Uuid;
 
 class GetProfileConsoleCommandTest extends FunctionalTest
 {
@@ -29,6 +32,20 @@ class GetProfileConsoleCommandTest extends FunctionalTest
 
         $output = $this->commandTester->getDisplay();
         $this::assertStringContainsString('Chris', $output);
+    }
+
+    /** @test */
+    public function commandValidationError(): void
+    {
+        self::expectException(InvalidCommandException::class);
+        $this->commandTester->execute(['id' => '']);
+    }
+
+    /** @test */
+    public function errorOnMissingProfile(): void
+    {
+        self::expectException(NotFoundException::class);
+        $this->commandTester->execute(['id' => (string) Uuid::v4()]);
     }
 
     /** @test */

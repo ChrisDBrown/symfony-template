@@ -1,0 +1,7 @@
+App\Application\Command\CreateProfileCommand:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                  min: 1
+                  max: 255

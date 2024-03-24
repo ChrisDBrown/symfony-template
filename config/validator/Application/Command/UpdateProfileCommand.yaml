@@ -1,0 +1,10 @@
+App\Application\Command\UpdateProfileCommand:
+    properties:
+        id:
+            - NotBlank: ~
+            - Uuid: ~
+        name:
+            -   NotBlank: ~
+            -   Length:
+                    min: 1
+                    max: 255

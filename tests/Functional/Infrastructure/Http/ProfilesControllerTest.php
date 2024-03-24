@@ -38,6 +38,19 @@ class ProfilesControllerTest extends FunctionalTest
     }
 
     /** @test */
+    public function validationErrorOnCreateProfile(): void
+    {
+        $this->client->jsonRequest('POST', '/profiles/', ['name' => '']);
+
+        self::assertResponseStatusCodeSame(422);
+        $response = $this->client->getResponse()->getContent();
+
+        self::assertJsonValueEquals($response, '$.title', 'Validation Failed');
+        /* @TODO: This'll be tedious for more complex validation errors, need a better way */
+        self::assertJsonValueEquals($response, '$.detail', sprintf('name: This value should not be blank.%sname: This value is too short. It should have 1 character or more.', PHP_EOL));
+    }
+
+    /** @test */
     public function canReadProfile(): void
     {
         $existingProfile = $this->persistProfileForName('Chris');
@@ -79,6 +92,25 @@ class ProfilesControllerTest extends FunctionalTest
         $this->client->jsonRequest('POST', sprintf('/profiles/%s', Uuid::v4()), ['name' => 'Kevin']);
 
         self::assertResponseStatusCodeSame(404);
+    }
+
+    /** @test */
+    public function validationErrorOnUpdateProfile(): void
+    {
+        $existingProfile = $this->persistProfileForName('Chris');
+
+        $this->client->jsonRequest('POST', sprintf('/profiles/%s', $existingProfile->getId()), ['name' => '']);
+
+        self::assertResponseStatusCodeSame(422);
+        $response = $this->client->getResponse()->getContent();
+
+        self::assertJsonValueEquals($response, '$.title', 'Validation Failed');
+        /* @TODO: This'll be tedious for more complex validation errors, need a better way */
+        self::assertJsonValueEquals($response, '$.detail', sprintf('name: This value should not be blank.%sname: This value is too short. It should have 1 character or more.', PHP_EOL));
+
+        $profile = $this->entityManager->find(Profile::class, $existingProfile->getId());
+        self::assertInstanceOf(Profile::class, $profile);
+        self::assertEquals('Chris', $profile->getName());
     }
 
     /** @test */

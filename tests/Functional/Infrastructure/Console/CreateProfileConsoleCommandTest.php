@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Infrastructure\Console;
 
 use App\Tests\Functional\FunctionalTest;
+use League\Tactician\Bundle\Middleware\InvalidCommandException;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class CreateProfileConsoleCommandTest extends FunctionalTest
@@ -27,5 +28,12 @@ class CreateProfileConsoleCommandTest extends FunctionalTest
 
         $output = $this->commandTester->getDisplay();
         $this::assertStringContainsString('Chris', $output);
+    }
+
+    /** @test */
+    public function commandValidationError(): void
+    {
+        self::expectException(InvalidCommandException::class);
+        $this->commandTester->execute(['name' => '']);
     }
 }

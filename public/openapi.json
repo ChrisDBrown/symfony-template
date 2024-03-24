@@ -40,7 +40,7 @@
                       "type": "array",
                       "description": "An array of Profiles.",
                       "items": {
-                        "$ref": "#/components/schemas/Profile",
+                        "$ref": "#/components/schemas/Profile"
                       }
                     }
                   }
@@ -63,6 +63,9 @@
         "responses": {
           "200": {
             "$ref": "#/components/responses/SingleProfile"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationErrorResponse"
           },
           "default": {
             "$ref": "#/components/responses/ErrorResponse"
@@ -129,6 +132,9 @@
         "responses": {
           "200": {
             "$ref": "#/components/responses/SingleProfile"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationErrorResponse"
           },
           "default": {
             "$ref": "#/components/responses/ErrorResponse"
@@ -222,7 +228,7 @@
       "ValidationProblem": {
         "type": "object",
         "title": "ValidationProblem",
-        "description": "[RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) format error",
+        "description": "[RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) format validation error",
         "examples": [
           {
             "type": "https://symfony.com/errors/validation",
@@ -287,9 +293,6 @@
                   "type": "string"
                 },
                 "title": {
-                  "type": "string"
-                },
-                "": {
                   "type": "string"
                 }
               }
@@ -359,18 +362,71 @@
         }
       },
       "ErrorResponse": {
-        "description": "Example response",
+        "description": "[RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) format error response",
         "content": {
           "application/json": {
             "schema": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/Problem"
-                },
-                {
-                  "$ref": "#/components/schemas/ValidationProblem"
+              "$ref": "#/components/schemas/Problem"
+            },
+            "examples": {
+              "Example 1": {
+                "value": {
+                  "type": "https://zalando.github.io/problem/constraint-violation",
+                  "title": "Connection Timeout",
+                  "status": 503,
+                  "detail": "Connection to database timed out"
                 }
-              ]
+              },
+              "Example 2": {
+                "value": {
+                  "type": "https://tools.ietf.org/html/rfc2616#section-10",
+                  "title": "An error occurred",
+                  "status": 404,
+                  "detail": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ValidationErrorResponse": {
+        "description": "[RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) format validation error response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ValidationProblem"
+            },
+            "examples": {
+              "Example 1": {
+                "value": {
+                  "type": "https://symfony.com/errors/validation",
+                  "title": "Validation Failed",
+                  "status": 422,
+                  "detail": "name: This value should not be blank.\nname: This value is too short. It should have 2 characters or more.",
+                  "violations": [
+                    {
+                      "propertyPath": "name",
+                      "title": "This value should not be blank.",
+                      "template": "This value should not be blank.",
+                      "parameters": {
+                        "{{ value }}": "\"\""
+                      },
+                      "type": "urn:uuid:c1051bb4-d103-4f74-8988-acbcafc7fdc3"
+                    },
+                    {
+                      "propertyPath": "name",
+                      "title": "This value is too short. It should have 2 characters or more.",
+                      "template": "This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.",
+                      "parameters": {
+                        "{{ value }}": "\"\"",
+                        "{{ limit }}": "2",
+                        "{{ value_length }}": "0"
+                      },
+                      "type": "urn:uuid:9ff3fdc4-b214-49db-8718-39c315e33d45"
+                    }
+                  ]
+                }
+              }
             }
           }
         }
