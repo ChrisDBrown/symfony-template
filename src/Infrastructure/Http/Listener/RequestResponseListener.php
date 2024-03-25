@@ -15,7 +15,9 @@ class RequestResponseListener
 {
     public function onRequest(ControllerEvent $event): void
     {
-        if (!$event->getRequest()->headers->contains('Accept', 'application/json')) {
+        $acceptHeader = $event->getRequest()->headers->get('Accept');
+
+        if (!is_string($acceptHeader) || !str_contains($acceptHeader, 'application/json')) {
             throw new NotAcceptableHttpException('Server only handles JSON requests with header Accept: application/json');
         }
     }
