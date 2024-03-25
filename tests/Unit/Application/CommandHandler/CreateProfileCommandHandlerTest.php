@@ -23,8 +23,7 @@ class CreateProfileCommandHandlerTest extends TestCase
         $this->handler = new CreateProfileCommandHandler($this->repository);
     }
 
-    /** @test */
-    public function canSaveProfile(): void
+    public function testCanSaveProfile(): void
     {
         $this->repository->shouldReceive('save')->once();
 

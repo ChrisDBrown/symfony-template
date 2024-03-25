@@ -21,13 +21,11 @@ class GetProfilesQueryHandlerTest extends IntegrationTest
     }
 
     /**
-     * @test
-     *
      * @dataProvider testData
      *
      * @param list<string> $names
      */
-    public function canGetProfiles(array $names): void
+    public function testCanGetProfiles(array $names): void
     {
         foreach ($names as $name) {
             $this->persistProfileForName($name);
@@ -35,7 +33,7 @@ class GetProfilesQueryHandlerTest extends IntegrationTest
 
         $result = $this->handler->handle(new GetProfilesQuery());
 
-        self::assertCount(count($names), $result);
+        self::assertCount(\count($names), $result);
     }
 
     protected function testData(): \Generator

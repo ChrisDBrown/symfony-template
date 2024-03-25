@@ -22,8 +22,7 @@ class GetProfileQueryHandlerTest extends IntegrationTest
         $this->handler = static::getContainer()->get(GetProfileQueryHandler::class);
     }
 
-    /** @test */
-    public function canFindExistingProfile(): void
+    public function testCanFindExistingProfile(): void
     {
         $existingProfile = $this->persistProfileForName('Chris');
 
@@ -32,8 +31,7 @@ class GetProfileQueryHandlerTest extends IntegrationTest
         self::assertSame($existingProfile, $result);
     }
 
-    /** @test */
-    public function throwOnProfileNotFound(): void
+    public function testThrowOnProfileNotFound(): void
     {
         self::expectException(NotFoundException::class);
         $this->handler->handle(new GetProfileQuery((string) Uuid::v4()));

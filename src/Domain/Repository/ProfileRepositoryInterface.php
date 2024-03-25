@@ -16,4 +16,6 @@ interface ProfileRepositoryInterface
     public function save(Profile $profile): void;
 
     public function delete(Profile $profile): void;
+
+    public function flush(): void;
 }

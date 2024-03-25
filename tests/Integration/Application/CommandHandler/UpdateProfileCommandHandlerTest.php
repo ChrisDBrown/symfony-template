@@ -23,8 +23,7 @@ class UpdateProfileCommandHandlerTest extends IntegrationTest
         $this->handler = static::getContainer()->get(UpdateProfileCommandHandler::class);
     }
 
-    /** @test */
-    public function canUpdateProfile(): void
+    public function testCanUpdateProfile(): void
     {
         $persistedProfile = $this->persistProfileForName('Chris');
 
@@ -35,8 +34,7 @@ class UpdateProfileCommandHandlerTest extends IntegrationTest
         self::assertEquals('Kevin', $updatedProfile->getName());
     }
 
-    /** @test */
-    public function throwOnProfileNotFound(): void
+    public function testThrowOnProfileNotFound(): void
     {
         self::expectException(NotFoundException::class);
         $this->handler->handle(new UpdateProfileCommand((string) Uuid::v4(), 'Kevin'));

@@ -8,6 +8,7 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
+        '@Symfony:risky' => true,
         'declare_strict_types' => true,
     ])
     ->setFinder($finder)

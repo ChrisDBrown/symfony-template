@@ -32,7 +32,7 @@ class CreateProfileConsoleCommand extends ConsoleCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $name = $input->getArgument('name');
-        if (!is_string($name)) {
+        if (!\is_string($name)) {
             $output->write('No name given');
 
             return 1;

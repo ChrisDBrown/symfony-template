@@ -22,11 +22,11 @@ class DoctrineProfileRepositoryTest extends IntegrationTest
         $this->repository = static::getContainer()->get(DoctrineProfileRepository::class);
     }
 
-    /** @test */
-    public function canSaveProfile(): void
+    public function testCanSaveProfile(): void
     {
         $profile = Profile::create('Chris');
         $this->repository->save($profile);
+        $this->repository->flush();
 
         $result = $this->entityManager->find(Profile::class, $profile->getId());
 
@@ -34,8 +34,7 @@ class DoctrineProfileRepositoryTest extends IntegrationTest
         self::assertEquals($profile->getId(), $result->getId());
     }
 
-    /** @test */
-    public function canGetAllProfiles(): void
+    public function testCanGetAllProfiles(): void
     {
         $this->persistProfileForName('Chris');
         $this->persistProfileForName('Kevin');
@@ -47,8 +46,7 @@ class DoctrineProfileRepositoryTest extends IntegrationTest
         self::assertEquals('Kevin', $result[1]->getName());
     }
 
-    /** @test */
-    public function canDeleteProfile(): void
+    public function testCanDeleteProfile(): void
     {
         $this->persistProfileForName('Chris');
         $this->persistProfileForName('Kevin');
@@ -57,6 +55,7 @@ class DoctrineProfileRepositoryTest extends IntegrationTest
         self::assertCount(2, $beforeDelete);
 
         $this->repository->delete($beforeDelete[0]);
+        $this->repository->flush();
 
         $afterDelete = $this->repository->getAll();
         self::assertCount(1, $afterDelete);

@@ -26,8 +26,7 @@ class GetProfileQueryHandlerTest extends TestCase
         $this->handler = new GetProfileQueryHandler($this->repository);
     }
 
-    /** @test */
-    public function canFindExistingProfile(): void
+    public function testCanFindExistingProfile(): void
     {
         $id = Uuid::v4();
         $profile = new Profile($id, 'Chris');
@@ -37,8 +36,7 @@ class GetProfileQueryHandlerTest extends TestCase
         self::assertEquals($profile, $this->handler->handle(new GetProfileQuery((string) $id)));
     }
 
-    /** @test */
-    public function throwOnProfileNotFound(): void
+    public function testThrowOnProfileNotFound(): void
     {
         $id = Uuid::v4();
 

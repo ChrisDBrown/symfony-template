@@ -24,8 +24,7 @@ class GetProfilesQueryHandlerTest extends TestCase
         $this->handler = new GetProfilesQueryHandler($this->repository);
     }
 
-    /** @test */
-    public function canHandleCommand(): void
+    public function testCanHandleCommand(): void
     {
         $profiles = [
             Profile::create('Chris'),

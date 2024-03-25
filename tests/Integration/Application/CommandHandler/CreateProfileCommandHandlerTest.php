@@ -21,10 +21,10 @@ class CreateProfileCommandHandlerTest extends IntegrationTest
         $this->handler = static::getContainer()->get(CreateProfileCommandHandler::class);
     }
 
-    /** @test */
-    public function canSaveProfile(): void
+    public function testCanSaveProfile(): void
     {
         $result = $this->handler->handle(new CreateProfileCommand('Chris'));
+        $this->entityManager->flush();
 
         self::assertEquals('Chris', $result->getName());
         self::assertInstanceOf(Profile::class, $this->entityManager->getRepository(Profile::class)->findOneById($result->getId()));

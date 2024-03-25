@@ -21,8 +21,7 @@ class ProfilesControllerTest extends FunctionalTest
         self::assertOpenApiSchema('public/openapi.json', $this->client);
     }
 
-    /** @test */
-    public function canCreateProfile(): void
+    public function testCanCreateProfile(): void
     {
         $this->client->jsonRequest('POST', '/profiles/', ['name' => 'Chris']);
 
@@ -37,8 +36,7 @@ class ProfilesControllerTest extends FunctionalTest
         self::assertEquals('Chris', $profile->getName());
     }
 
-    /** @test */
-    public function validationErrorOnCreateProfile(): void
+    public function testValidationErrorOnCreateProfile(): void
     {
         $this->client->jsonRequest('POST', '/profiles/', ['name' => '']);
 
@@ -47,11 +45,10 @@ class ProfilesControllerTest extends FunctionalTest
 
         self::assertJsonValueEquals($response, '$.title', 'Validation Failed');
         /* @TODO: This'll be tedious for more complex validation errors, need a better way */
-        self::assertJsonValueEquals($response, '$.detail', sprintf('name: This value should not be blank.%sname: This value is too short. It should have 1 character or more.', PHP_EOL));
+        self::assertJsonValueEquals($response, '$.detail', sprintf('name: This value should not be blank.%sname: This value is too short. It should have 1 character or more.', \PHP_EOL));
     }
 
-    /** @test */
-    public function canReadProfile(): void
+    public function testCanReadProfile(): void
     {
         $existingProfile = $this->persistProfileForName('Chris');
 
@@ -62,16 +59,14 @@ class ProfilesControllerTest extends FunctionalTest
         self::assertJsonValueEquals($response, '$.data.name', 'Chris');
     }
 
-    /** @test */
-    public function readMissingProfileGives404(): void
+    public function testReadMissingProfileGives404(): void
     {
         $this->client->jsonRequest('GET', sprintf('/profiles/%s', Uuid::v4()));
 
         self::assertResponseStatusCodeSame(404);
     }
 
-    /** @test */
-    public function canUpdateProfile(): void
+    public function testCanUpdateProfile(): void
     {
         $existingProfile = $this->persistProfileForName('Chris');
 
@@ -86,16 +81,14 @@ class ProfilesControllerTest extends FunctionalTest
         self::assertEquals('Kevin', $profile->getName());
     }
 
-    /** @test */
-    public function updateMissingProfileGives404(): void
+    public function testUpdateMissingProfileGives404(): void
     {
         $this->client->jsonRequest('POST', sprintf('/profiles/%s', Uuid::v4()), ['name' => 'Kevin']);
 
         self::assertResponseStatusCodeSame(404);
     }
 
-    /** @test */
-    public function validationErrorOnUpdateProfile(): void
+    public function testValidationErrorOnUpdateProfile(): void
     {
         $existingProfile = $this->persistProfileForName('Chris');
 
@@ -106,15 +99,14 @@ class ProfilesControllerTest extends FunctionalTest
 
         self::assertJsonValueEquals($response, '$.title', 'Validation Failed');
         /* @TODO: This'll be tedious for more complex validation errors, need a better way */
-        self::assertJsonValueEquals($response, '$.detail', sprintf('name: This value should not be blank.%sname: This value is too short. It should have 1 character or more.', PHP_EOL));
+        self::assertJsonValueEquals($response, '$.detail', sprintf('name: This value should not be blank.%sname: This value is too short. It should have 1 character or more.', \PHP_EOL));
 
         $profile = $this->entityManager->find(Profile::class, $existingProfile->getId());
         self::assertInstanceOf(Profile::class, $profile);
         self::assertEquals('Chris', $profile->getName());
     }
 
-    /** @test */
-    public function canDeleteProfile(): void
+    public function testCanDeleteProfile(): void
     {
         $existingProfile = $this->persistProfileForName('Chris');
 
@@ -126,16 +118,14 @@ class ProfilesControllerTest extends FunctionalTest
         self::assertNull($profile);
     }
 
-    /** @test */
-    public function deleteMissingProfileGives404(): void
+    public function testDeleteMissingProfileGives404(): void
     {
         $this->client->jsonRequest('DELETE', sprintf('/profiles/%s', Uuid::v4()));
 
         self::assertResponseStatusCodeSame(404);
     }
 
-    /** @test */
-    public function canListProfiles(): void
+    public function testCanListProfiles(): void
     {
         $this->persistProfileForName('Chris');
         $this->persistProfileForName('Kevin');

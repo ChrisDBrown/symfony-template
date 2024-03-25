@@ -23,18 +23,17 @@ class DeleteProfileCommandHandlerTest extends IntegrationTest
         $this->handler = static::getContainer()->get(DeleteProfileCommandHandler::class);
     }
 
-    /** @test */
-    public function canDeleteProfile(): void
+    public function testCanDeleteProfile(): void
     {
         $persistedProfile = $this->persistProfileForName('Chris');
 
         $this->handler->handle(new DeleteProfileCommand((string) $persistedProfile->getId()));
+        $this->entityManager->flush();
 
         self::assertNull($this->entityManager->getRepository(Profile::class)->findOneById((string) $persistedProfile->getId()));
     }
 
-    /** @test */
-    public function throwOnProfileNotFound(): void
+    public function testThrowOnProfileNotFound(): void
     {
         self::expectException(NotFoundException::class);
         $this->handler->handle(new DeleteProfileCommand((string) Uuid::v4()));

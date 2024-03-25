@@ -33,7 +33,7 @@ class GetProfileConsoleCommand extends ConsoleCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $id = $input->getArgument('id');
-        if (is_string($id)) {
+        if (\is_string($id)) {
             /** @var Profile $profile */
             $profile = $this->queryBus->handle(new GetProfileQuery($id));
             $output->write(sprintf('%s %s', $profile->getId(), $profile->getName()));

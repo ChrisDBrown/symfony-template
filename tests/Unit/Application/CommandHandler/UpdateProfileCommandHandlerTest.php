@@ -26,8 +26,7 @@ class UpdateProfileCommandHandlerTest extends TestCase
         $this->handler = new UpdateProfileCommandHandler($this->repository);
     }
 
-    /** @test */
-    public function canDeleteProfile(): void
+    public function testCanDeleteProfile(): void
     {
         $profile = Profile::create('Chris');
 
@@ -39,8 +38,7 @@ class UpdateProfileCommandHandlerTest extends TestCase
         self::assertEquals('Kevin', $profile->getName());
     }
 
-    /** @test */
-    public function throwOnProfileNotFound(): void
+    public function testThrowOnProfileNotFound(): void
     {
         $fakeId = Uuid::v4();
 

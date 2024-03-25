@@ -22,8 +22,7 @@ class GetProfileConsoleCommandTest extends FunctionalTest
         $this->commandTester = $this->getCommandTester('app:get-profile');
     }
 
-    /** @test */
-    public function canGetSingleProfile(): void
+    public function testCanGetSingleProfile(): void
     {
         $profile = $this->persistProfileForName('Chris');
 
@@ -34,22 +33,19 @@ class GetProfileConsoleCommandTest extends FunctionalTest
         $this::assertStringContainsString('Chris', $output);
     }
 
-    /** @test */
-    public function commandValidationError(): void
+    public function testCommandValidationError(): void
     {
         self::expectException(InvalidCommandException::class);
         $this->commandTester->execute(['id' => '']);
     }
 
-    /** @test */
-    public function errorOnMissingProfile(): void
+    public function testErrorOnMissingProfile(): void
     {
         self::expectException(NotFoundException::class);
         $this->commandTester->execute(['id' => (string) Uuid::v4()]);
     }
 
-    /** @test */
-    public function canGetMultipleProfiles(): void
+    public function testCanGetMultipleProfiles(): void
     {
         $this->persistProfileForName('Chris');
         $this->persistProfileForName('Kevin');

@@ -20,8 +20,7 @@ class CreateProfileConsoleCommandTest extends FunctionalTest
         $this->commandTester = $this->getCommandTester('app:create-profile');
     }
 
-    /** @test */
-    public function canCreateProfile(): void
+    public function testCanCreateProfile(): void
     {
         $this->commandTester->execute(['name' => 'Chris']);
         $this->commandTester->assertCommandIsSuccessful();
@@ -30,8 +29,7 @@ class CreateProfileConsoleCommandTest extends FunctionalTest
         $this::assertStringContainsString('Chris', $output);
     }
 
-    /** @test */
-    public function commandValidationError(): void
+    public function testCommandValidationError(): void
     {
         self::expectException(InvalidCommandException::class);
         $this->commandTester->execute(['name' => '']);
