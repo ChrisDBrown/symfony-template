@@ -31,7 +31,6 @@ abstract class IntegrationTest extends KernelTestCase
         parent::tearDown();
     }
 
-    // @TODO: I'd rather have a builder for test entities than have a million methods on this base class
     protected function persistProfileForName(string $name): Profile
     {
         $uuid = Uuid::v4();
