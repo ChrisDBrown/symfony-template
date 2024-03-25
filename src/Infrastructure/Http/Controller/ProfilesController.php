@@ -12,6 +12,7 @@ use App\Application\Query\GetProfilesQuery;
 use App\Domain\Model\Entity\Profile;
 use App\Infrastructure\Http\RequestDto\CreateProfileRequestDto;
 use App\Infrastructure\Http\RequestDto\UpdateProfileRequestDto;
+use JMS\Serializer\SerializerInterface;
 use League\Tactician\CommandBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,7 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/profiles', name: 'profiles_', format: 'json')]
 class ProfilesController extends AbstractController

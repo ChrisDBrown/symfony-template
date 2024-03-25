@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\Controller;
 
+use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Exception\LogicException;
-use Symfony\Component\Serializer\SerializerInterface;
 
 trait ApiTrait
 {
