@@ -26,12 +26,9 @@ class Profile
         return new self(Uuid::v4(), $name);
     }
 
-    public function update(string $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
-        // @TODO: updatedAt updates are handled by gedmo:timestampeable but Rector makes
-        //        the property readonly if we don't update it somewhere in the class code - ReadOnlyPropertyRector
-        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getName(): string
@@ -42,17 +39,5 @@ class Profile
     public function getId(): UuidV4
     {
         return $this->id;
-    }
-
-    // @TODO: Needed as symfony serializer's default mode uses getters - change this, maybe replace with JMS
-    public function getCreatedAt(): \DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    // @TODO: Needed as symfony serializer's default mode uses getters - change this, maybe replace with JMS
-    public function getUpdatedAt(): \DateTimeImmutable
-    {
-        return $this->updatedAt;
     }
 }

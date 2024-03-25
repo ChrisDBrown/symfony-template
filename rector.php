@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
@@ -20,5 +21,11 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
         PHPUnitSetList::PHPUNIT_90,
+    ]);
+
+    $rectorConfig->skip([
+        ReadOnlyPropertyRector::class => [
+            __DIR__.'/src/Domain/Model/Entity/*',
+        ],
     ]);
 };

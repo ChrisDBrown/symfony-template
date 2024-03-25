@@ -23,7 +23,7 @@ class UpdateProfileCommandHandler
             throw new NotFoundException(sprintf('No profile found for id %s', $command->id));
         }
 
-        $profile->update($command->name);
+        $profile->setName($command->name);
         $this->profileRepository->save($profile);
 
         return $profile;
