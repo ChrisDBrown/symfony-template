@@ -51,6 +51,9 @@ jobs:
         name: Run migrations
         run: docker compose exec -T php bin/console -e test doctrine:migrations:migrate --no-interaction
       -
+        name: Run VarDump Checker
+        run: docker compose exec -T php vendor/bin/var-dump-check --symfony --exclude vendor .
+      -
         name: Run PHPUnit
         run: docker compose exec -T -e APP_ENV=test php bin/phpunit
       -

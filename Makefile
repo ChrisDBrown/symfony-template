@@ -67,7 +67,13 @@ cs-fix: ## Run coding standards check and auto-fix issues
 deptrac: ## Check our domain boundaries haven't been crossed
 	@$(PHP_CONT) vendor/bin/deptrac
 
-all: test stan rector cs deptrac ## Run all our code quality tools as one
+db-check:
+	@$(SYMFONY) doctrine:schema:validate
+
+var-dump:
+	@$(PHP_CONT) vendor/bin/var-dump-check --symfony --exclude vendor .
+
+all: test stan rector cs deptrac var-dump ## Run all our code quality tools as one
 
 ## —— Database 📋 ——————————————————————————————————————————————————————————————
 db-reset:
